@@ -5,19 +5,22 @@ import random
 
 
 class Type:
-    def instant_double(self):
+    @staticmethod
+    def instant_double(blocking: bool = False):
         print('instant double')
-        _play()
+        _play(blocking)
         sleep(timings.values['idt'])
-        _play()
+        _play(blocking)
 
-    def fast_double(self):
+    @staticmethod
+    def fast_double(blocking: bool = False):
         fastdoublewait = random.randrange(*timings.values['fdr'])
         print(f'fast double, wait {fastdoublewait}')
-        _play()
+        _play(blocking)
         sleep(fastdoublewait)
-        _play()
+        _play(blocking)
 
-    def single(self):
+    @staticmethod
+    def single(blocking: bool = False):
         print('single')
-        _play()
+        _play(blocking)

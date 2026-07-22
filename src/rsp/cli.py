@@ -60,11 +60,11 @@ def main():
         )
 
         if is_idc:
-            Type.instant_double()
+            Type.instant_double(args.blocking)
         elif is_fdc:
-            Type.fast_double()
+            Type.fast_double(args.blocking)
         else:
-            Type.single()
+            Type.single(args.blocking)
 
         randwait = random.randrange(*timings.values['rot'])
         print(f'waiting for {randwait} seconds')
