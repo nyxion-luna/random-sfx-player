@@ -4,10 +4,11 @@ import random
 import sys
 
 from rsp.__init__ import __version__, __description__
-from rsp.players.types import Type
 from rsp.utils.sigint_handler import setup
+from rsp.utils.killprocs import clearPlays
 import rsp.utils.timings_store as timings
 import rsp.players.cmd_store as cmd
+from rsp.players.types import Type
 
 setup()
 
@@ -22,7 +23,8 @@ parser.add_argument(
     '-v',
     '--volume',
     nargs=1,
-    help='the volume you want to play the sound at in percentage form. min = 0, max = 800.',
+    type=int,
+    help='the volume you want to play the sound at in percentage form. min = 0, max = 800, both inclusive.',
 )
 parser.add_argument(
     '-b',
@@ -31,25 +33,54 @@ parser.add_argument(
     help='passing this flag will cause all events to be blocking rather than asynchronous.',
 )
 parser.add_argument(
-    '-t', '--test', help='this flag will play one single event and exit.'
+    '-t',
+    '--test',
+    help='this flag will play one single event and exit.',
+    action='store_true',
 )
 pexclusive.add_argument(
+    '-V',
     '--version',
     help='prints the version and exits.',
+    action='store_true',
+)
+parser.add_argument(
+    '-f',
+    '--force',
+    help='this flag will allow volumes over 800.',
     action='store_true',
 )
 args = parser.parse_args()
 
 if args.version:
-    print(f'rsp, version {__version__}')
+    print(f'\033[32;1mrsp\033[0m, version \033[36;1m{__version__}\033[0m')
     sys.exit(0)
 
 
 cmd.init(['ffplay', args.filename, '-nodisp', '-autoexit'])
 
+if args.volume is not None:
+    args.volume = args.volume[0]
+    if args.volume < 0:
+        print(
+            f'\033[31;1merror: \033[35mvolume {args.volume} is under 0.\033[0m pass a volume \033[33;1mover or equal to 0.\033[0m'
+        )
+        sys.exit(1)
+    elif 0 <= args.volume <= 100:
+        cmd.command.append('-volume')
+        cmd.command.append(str(args.volume))
+    elif 100 < args.volume <= 800 or args.force:
+        cmd.command.append('-af')
+        cmd.command.append(f'volume={args.volume / 100}')
+    else:
+        print(
+            f'\033[31;1merror: \033[35mvolume {args.volume} is over 800.\033[0m use the \033[33;1m--force flag.\033[0m'
+        )
+        sys.exit(1)
+
 
 def main():
-    while True:
+    while not args.test:
         playtype = random.randrange(101)
 
         is_idc = 0 <= playtype < (timings.values['idc'] + 1)
@@ -59,6 +90,8 @@ def main():
             < (timings.values['fdc'] + timings.values['idc'] + 1)
         )
 
+        clearPlays()
+
         if is_idc:
             Type.instant_double(args.blocking)
         elif is_fdc:
@@ -67,5 +100,7 @@ def main():
             Type.single(args.blocking)
 
         randwait = random.randrange(*timings.values['rot'])
-        print(f'waiting for {randwait} seconds')
+        print(f'\033[32;1mmain: \033[0mwaiting for \033[36;1m{randwait} seconds\033[0m')
         sleep(randwait)
+    else:
+        Type.single(args.blocking)
