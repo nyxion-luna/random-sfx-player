@@ -1,0 +1,25 @@
+[project]
+name = 'rsp'
+dynamic = ['version', 'description']
+requires-python = '>=3.10'
+authors = [{ name = 'nyxion' }]
+maintainers = [{ name = 'nyxion' }]
+readme = 'readme.md'
+
+[project.urls]
+Homepage = 'https://github.com/nyxion-luna/rsp'
+Repository = 'https://github.com/nyxion-luna/rsp'
+'Bug Tracker' = 'https://github.com/nyxion-luna/rsp/issues'
+
+[project.scripts]
+rsp = 'rsp.cli:main'
+
+[build-system]
+requires = ['hatchling']
+build-backend = 'hatchling.build'
+
+[tool.hatch.version]
+path = 'src/rsp/__init__.py'
+
+[tool.ruff.format]
+quote-style = 'single'

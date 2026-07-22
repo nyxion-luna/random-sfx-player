@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import os
 import sys
 import signal
@@ -72,26 +71,27 @@ def clearPlays():
             pass
 
 
-while True:
-    playtype = random.randrange(101)
+def main():
+    while True:
+        playtype = random.randrange(101)
 
-    if 0 <= playtype < (values['idc'] + 1):
-        print('instant double')
-        play()
-        sleep(values['idt'])
-        play()
-    elif (values['idc'] + 1) <= playtype < (values['fdc'] + values['idc'] + 1):
-        fastdoublewait = random.randrange(*values['fdr'])
-        print(f'fast double, wait {fastdoublewait}')
-        play()
-        sleep(fastdoublewait)
-        play()
-    else:
-        print('single')
-        play()
+        if 0 <= playtype < (values['idc'] + 1):
+            print('instant double')
+            play()
+            sleep(values['idt'])
+            play()
+        elif (values['idc'] + 1) <= playtype < (values['fdc'] + values['idc'] + 1):
+            fastdoublewait = random.randrange(*values['fdr'])
+            print(f'fast double, wait {fastdoublewait}')
+            play()
+            sleep(fastdoublewait)
+            play()
+        else:
+            print('single')
+            play()
 
-    randwait = random.randrange(*values['rot'])
-    print(f'waiting for {randwait} seconds')
-    sleep(randwait)
+        randwait = random.randrange(*values['rot'])
+        print(f'waiting for {randwait} seconds')
+        sleep(randwait)
 
-    clearPlays()
+        clearPlays()
