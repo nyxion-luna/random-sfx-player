@@ -3,10 +3,13 @@ import argparse
 import random
 import sys
 
+from rsp.players.instant_double import instant_double
 from rsp.__init__ import __version__, __description__
+from rsp.players.fast_double import fast_double
 from rsp.utils.sigint_handler import setup
+import rsp.utils.timings_store as timings
+from rsp.players.single import single
 import rsp.players.cmd_store as cmd
-from rsp.players._play import _play
 
 setup()
 
@@ -45,34 +48,23 @@ if args.version:
 
 
 cmd.init(['ffplay', args.filename, '-nodisp', '-autoexit'])
-values = {
-    'rot': [99, 218, 2],  # range of time between each event in seconds [min, max, step]
-    'idc': 20,  # instant double chance in %
-    'idt': 0.5,  # time between each event of a fast double in seconds
-    'fdc': 20,  # fast double chance in %
-    'fdr': [8, 16],  # range of time between each event of a fast double [min, max]
-}
 
 
 def main():
     while True:
         playtype = random.randrange(101)
 
-        if 0 <= playtype < (values['idc'] + 1):
-            print('instant double')
-            _play()
-            sleep(values['idt'])
-            _play()
-        elif (values['idc'] + 1) <= playtype < (values['fdc'] + values['idc'] + 1):
-            fastdoublewait = random.randrange(*values['fdr'])
-            print(f'fast double, wait {fastdoublewait}')
-            _play()
-            sleep(fastdoublewait)
-            _play()
+        if 0 <= playtype < (timings.values['idc'] + 1):
+            instant_double()
+        elif (
+            (timings.values['idc'] + 1)
+            <= playtype
+            < (timings.values['fdc'] + timings.values['idc'] + 1)
+        ):
+            fast_double()
         else:
-            print('single')
-            _play()
+            single()
 
-        randwait = random.randrange(*values['rot'])
+        randwait = random.randrange(*timings.values['rot'])
         print(f'waiting for {randwait} seconds')
         sleep(randwait)
