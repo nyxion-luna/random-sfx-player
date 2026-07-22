@@ -3,12 +3,10 @@ import argparse
 import random
 import sys
 
-from rsp.players.instant_double import instant_double
 from rsp.__init__ import __version__, __description__
-from rsp.players.fast_double import fast_double
+from rsp.players.types import Type
 from rsp.utils.sigint_handler import setup
 import rsp.utils.timings_store as timings
-from rsp.players.single import single
 import rsp.players.cmd_store as cmd
 
 setup()
@@ -62,11 +60,11 @@ def main():
         )
 
         if is_idc:
-            instant_double()
+            Type.instant_double()
         elif is_fdc:
-            fast_double()
+            Type.fast_double()
         else:
-            single()
+            Type.single()
 
         randwait = random.randrange(*timings.values['rot'])
         print(f'waiting for {randwait} seconds')
