@@ -54,13 +54,16 @@ def main():
     while True:
         playtype = random.randrange(101)
 
-        if 0 <= playtype < (timings.values['idc'] + 1):
-            instant_double()
-        elif (
+        is_idc = 0 <= playtype < (timings.values['idc'] + 1)
+        is_fdc = (
             (timings.values['idc'] + 1)
             <= playtype
             < (timings.values['fdc'] + timings.values['idc'] + 1)
-        ):
+        )
+
+        if is_idc:
+            instant_double()
+        elif is_fdc:
             fast_double()
         else:
             single()
