@@ -7,9 +7,9 @@ maintainers = [{ name = 'nyxion' }]
 readme = 'readme.md'
 
 [project.urls]
-Homepage = 'https://github.com/nyxion-luna/rsp'
-Repository = 'https://github.com/nyxion-luna/rsp'
-'Bug Tracker' = 'https://github.com/nyxion-luna/rsp/issues'
+Homepage = 'https://github.com/nyxion-luna/random-sfx-player'
+Repository = 'https://github.com/nyxion-luna/random-sfx-player'
+'Bug Tracker' = 'https://github.com/nyxion-luna/random-sfx-player/issues'
 
 [project.scripts]
 rsp = 'rsp.cli:main'
