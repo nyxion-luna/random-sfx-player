@@ -13,8 +13,8 @@ from rsp.players.types import Type
 setup()
 
 parser = argparse.ArgumentParser(prog='random-sfx-player', description=__description__)
-pexclusive = parser.add_mutually_exclusive_group(required=True)
-pexclusive.add_argument(
+pexcl = parser.add_mutually_exclusive_group(required=True)
+pexcl.add_argument(
     'filename',
     nargs='?',
     help='the path of the audio you want to use. the length should be under the minimum time between events to avoid a sharp cutoff.',
@@ -38,7 +38,7 @@ parser.add_argument(
     help='this flag will play one single event and exit.',
     action='store_true',
 )
-pexclusive.add_argument(
+pexcl.add_argument(
     '-V',
     '--version',
     help='prints the version and exits.',
@@ -58,6 +58,10 @@ if args.version:
 
 
 cmd.init(['ffplay', args.filename, '-nodisp', '-autoexit'])
+
+if args.force and args.volume is None:
+    print('\033[31;1merror: \033[33m--force \033[0mrequires \033[33;1m--volume\033[0m')
+    sys.exit(1)
 
 if args.volume is not None:
     args.volume = args.volume[0]
