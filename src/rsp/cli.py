@@ -5,7 +5,7 @@ import sys
 
 from rsp.__init__ import __version__, __description__
 from rsp.utils.sigint_handler import setup
-from rsp.utils.killprocs import clearPlays
+from rsp.process_management.killprocs import clearPlays
 import rsp.utils.timings_store as timings
 import rsp.players.cmd_store as cmd
 from rsp.players.types import Type

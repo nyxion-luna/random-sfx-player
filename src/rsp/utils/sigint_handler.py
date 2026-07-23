@@ -1,4 +1,4 @@
-from rsp.utils.killprocs import clearPlays
+from rsp.process_management.killprocs import clearPlays
 import signal
 import sys
 

@@ -1,4 +1,4 @@
-import rsp.utils.process_store as procs
+import rsp.process_management.process_store as procs
 import rsp.players.cmd_store as cmd
 import subprocess as sub
 
